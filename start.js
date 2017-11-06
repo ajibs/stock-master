@@ -4,7 +4,7 @@ require('dotenv').config();
 mongoose.connect(process.env.DATABASE, { useMongoClient: true });
 mongoose.Promise = global.Promise; // tell mongoose to use ES6 promises
 mongoose.connection.on('error', (err) => {
-  console.error(`Erro!: ${err.message}`);
+  console.error(`Error!: ${err.message}`);
 });
 
 // load the app when the database connects successfully
