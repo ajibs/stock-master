@@ -11,6 +11,17 @@ html(lang="en")
 
   body
     div(id="container" style="height: 400px; min-width: 310px")
+    if (companyNames)
+      each company in companyNames
+        div
+          h2= company
+          a(href=`/remove-stock/${company}`)
+            button Remove
+    div
+      form(action="/add-stock" method="POST")
+        p Stock Name
+        input(name="company" placeholder="enter stock code")
+        input(type="submit" value="add")
 
     script const seriesOptions = !{seriesOptions};
     script(src="js/stocksTheme.js")

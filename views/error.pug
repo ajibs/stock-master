@@ -8,3 +8,9 @@ html(lang="en")
 
   body
     h2 Error
+    if (companyNames)
+      each company in companyNames
+        div
+          h2= company
+          a(href=`/remove-stock/${company}`)
+            button Remove
