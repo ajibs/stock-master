@@ -44,6 +44,6 @@ exports.showHome = (req, res) => {
 };
 
 
-exports.test = (req, res) => {
+exports.showError = (req, res) => {
   res.render('error');
 };

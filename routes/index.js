@@ -4,6 +4,6 @@ const stockController = require('../controllers/stockController');
 const router = express.Router();
 
 router.get('/', stockController.showHome);
-router.get('/error', stockController.test);
+router.get('/error', stockController.showError);
 
 module.exports = router;
