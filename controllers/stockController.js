@@ -45,9 +45,20 @@ function getStockData(companyNames, res) {
 
 
 exports.showHome = async (req, res) => {
-  const stock = await Stock.findOne({});
-  const { companies } = stock;
-  getStockData(companies, res);
+  try {
+    const stock = await Stock.findOne({});
+    const { companies } = stock;
+
+    if (!companies) {
+      // companies are empty
+      res.render('index');
+      return;
+    }
+    res.render('index');
+    // getStockData(companies, res);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 
@@ -60,6 +71,8 @@ exports.showError = (req, res) => {
 
 exports.addStock = async (req, res) => {
   const companyStock = req.body.company;
+  console.log(`Company is ${companyStock}`);
+
   let stock = await Stock.findOne({});
 
   // if no document; create new document
@@ -75,7 +88,8 @@ exports.addStock = async (req, res) => {
 
   stock.companies.push(companyStock);
   const updated = await stock.save();
-  getStockData(updated.companies, res);
+  res.json(updated);
+//  getStockData(updated.companies, res);
 };
 
 

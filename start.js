@@ -17,11 +17,22 @@ const app = require('./app');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+const axios = require('axios');
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on('chat message', (msg) => {
+    console.log(msg);
+    socket.broadcast.emit('chat message', msg);
+    axios
+      .post('http://localhost:4000/add-stock', {
+        company: msg
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   });
 });
 

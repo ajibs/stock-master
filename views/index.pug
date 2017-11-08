@@ -17,12 +17,13 @@ html(lang="en")
           h2= company
           a(href=`/remove-stock/${company}`)
             button Remove
+
     div
-      form(action="/add-stock" method="POST")
-        p Stock Name
-        input(name="company" placeholder="enter stock code")
+      form(action="")
+        input(id="m" name="company" placeholder="enter stock code")
         input(type="submit" value="add")
 
-    script const seriesOptions = !{seriesOptions};
     script(src="js/stocksTheme.js")
     script(src="js/createChart.js")
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/realtime.js")
