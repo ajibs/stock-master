@@ -1,8 +1,7 @@
 const axios = require('axios');
+const Stock = require('../models/Stock');
 
-exports.showHome = (req, res) => {
-  const companyNames = ['AAPL', 'GOOGL', 'MSFT'];
-
+function getStockData(companyNames, res) {
   // get stock data for each company
   // save to seriesOptions
 
@@ -26,7 +25,8 @@ exports.showHome = (req, res) => {
         if (seriesOptions.length === companyNames.length) {
           // render home page
           res.render('index', {
-            seriesOptions: JSON.stringify(seriesOptions)
+            seriesOptions: JSON.stringify(seriesOptions),
+            companyNames
           });
         }
       })
@@ -35,15 +35,57 @@ exports.showHome = (req, res) => {
         res.send('Error');
       });
   });
-
   // need to refactor this function
   // get all data for companies before rendering home page
   // create promise for all companies
   // if all promises resolve; render home page
   // else render error
+}
+
+
+exports.showHome = async (req, res) => {
+  const stock = await Stock.findOne({});
+  const { companies } = stock;
+  getStockData(companies, res);
 };
 
 
-exports.test = (req, res) => {
-  res.render('error');
+exports.showError = (req, res) => {
+  res.render('error', {
+    companyNames: ['amzn', 'msft']
+  });
+};
+
+
+exports.addStock = async (req, res) => {
+  const companyStock = req.body.company;
+  let stock = await Stock.findOne({});
+
+  // if no document; create new document
+  if (!stock) {
+    stock = new Stock();
+  }
+
+  // stock already exists
+  if (stock.companies.includes(companyStock)) {
+    res.send('Stock already exists');
+    return;
+  }
+
+  stock.companies.push(companyStock);
+  const updated = await stock.save();
+  getStockData(updated.companies, res);
+};
+
+
+exports.removeStock = async (req, res) => {
+  const companyStock = req.params.company;
+  const stock = await Stock.findOneAndUpdate(
+    {},
+    {
+      $pull: { companies: companyStock }
+    },
+    { new: true }
+  );
+  res.json(stock);
 };
