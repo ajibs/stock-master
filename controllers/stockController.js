@@ -13,6 +13,7 @@ exports.showHome = (req, res) => {
       .get(url)
       .then((result) => {
         const formattedData = result.data.dataset.data.map((element) => {
+          // used const because variable assignment does not change; the value does;
           const givenDate = new Date(element[0]).getTime();
           const stockPrice = element[1];
           return [givenDate, stockPrice];
