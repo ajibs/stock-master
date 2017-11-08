@@ -1,10 +1,20 @@
 $(() => {
   const socket = io();
+  // console.log(seriesOptions);
   $('form').submit(() => {
     const stockName = $('#m').val();
     const url = `https://www.quandl.com/api/v3/datasets/wiki/${stockName}.json?start_date=2016-01-01&end_date=2017-11-02&order=asc&column_index=4&api_key=PSk62mMsvFBdWw3Fc7y2`;
+
+    // gather names from seriesOptions and check if stockName is in it
+
+    if (companyArray.includes(stockName)) {
+      alert('code exists');
+      return;
+    }
+    console.log(companyArray);
+
     $.getJSON(url, (result) => {
-      console.log(result.dataset.data);
+      // console.log(result.dataset.data);
 
       // format data properly for chart
       const formattedData = result.dataset.data.map((element) => {
@@ -14,8 +24,7 @@ $(() => {
         return [givenDate, stockPrice];
       });
 
-
-      seriesOptions = [{ name: stockName, data: formattedData }];
+      seriesOptions.push({ name: stockName, data: formattedData });
       // draw chart
       createChart();
 

@@ -27,7 +27,8 @@ function getStockData(companyNames, res) {
           // render home page
           res.render('index', {
             seriesOptions: JSON.stringify(seriesOptions),
-            companyNames
+            companyNames,
+            companyArray: JSON.stringify(companyNames)
           });
         }
       })
@@ -54,8 +55,8 @@ exports.showHome = async (req, res) => {
       res.render('index');
       return;
     }
-    res.render('index');
-    // getStockData(companies, res);
+    // res.render('index');
+    getStockData(companies, res);
   } catch (e) {
     console.error(e);
   }
