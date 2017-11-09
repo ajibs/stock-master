@@ -1,13 +1,30 @@
 const axios = require('axios');
 const Stock = require('../models/Stock');
 
+
+function generateDate() {
+  const d = new Date();
+  const currentYear = d.getFullYear();
+  const currentMonth = d.getMonth() + 1;
+  const currentDay = d.getDate();
+
+  const previousYear = currentYear - 1;
+  const startDate = `${previousYear}-${currentMonth}-${currentDay}`;
+  const endDate = `${currentYear}-${currentMonth}-${currentDay}`;
+
+  return [startDate, endDate];
+}
+
+
 function getStockData(companyNames, res) {
   // get stock data for each company
   // save to seriesOptions
 
+  const [startDate, endDate] = generateDate();
+
   const seriesOptions = [];
   companyNames.forEach((company) => {
-    const url = `https://www.quandl.com/api/v3/datasets/wiki/${company}.json?start_date=2016-01-01&end_date=2017-11-02&order=asc&column_index=4&api_key=${process.env.STOCK_API}`;
+    const url = `https://www.quandl.com/api/v3/datasets/wiki/${company}.json?start_date=${startDate}&end_date=${endDate}&order=asc&column_index=4&api_key=${process.env.STOCK_API}`;
     axios
       .get(url)
       .then((result) => {
@@ -34,7 +51,7 @@ function getStockData(companyNames, res) {
       })
       .catch((e) => {
         console.error(e);
-        res.send('Error');
+        res.render('error');
       });
   });
   // need to refactor this function
@@ -55,7 +72,6 @@ exports.showHome = async (req, res) => {
       res.render('index');
       return;
     }
-    // res.render('index');
     getStockData(companies, res);
   } catch (e) {
     console.error(e);
@@ -64,9 +80,7 @@ exports.showHome = async (req, res) => {
 
 
 exports.showError = (req, res) => {
-  res.render('error', {
-    companyNames: ['amzn', 'msft']
-  });
+  res.render('error');
 };
 
 
@@ -90,18 +104,29 @@ exports.addStock = async (req, res) => {
   stock.companies.push(companyStock);
   const updated = await stock.save();
   res.json(updated);
-//  getStockData(updated.companies, res);
 };
 
 
 exports.removeStock = async (req, res) => {
   const companyStock = req.params.company;
-  const stock = await Stock.findOneAndUpdate(
-    {},
-    {
-      $pull: { companies: companyStock }
-    },
-    { new: true }
-  );
-  res.json(stock);
+  try {
+    const stock = await Stock.findOneAndUpdate(
+      {},
+      {
+        $pull: { companies: companyStock }
+      },
+      { new: true }
+    );
+    res.json(stock);
+  } catch (e) {
+    console.error(e);
+  }
 };
+
+
+exports.start = async (req, res) => {
+  const data = { companies: ['aapl'] };
+  const result = await (new Stock(data)).save();
+  res.json(result);
+};
+
