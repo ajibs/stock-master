@@ -11,42 +11,32 @@ mongoose.connection.on('error', (err) => {
 
 // load the app when the database connects successfully
 const app = require('./app');
-
-
-// testing sockets
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-
 const axios = require('axios');
 
-io.on('connection', (socket) => {
 
-  socket.on('chat message', (msg) => {
-    console.log(msg);
-    socket.broadcast.emit('chat message', msg);
-    axios
-      .post('http://localhost:4000/add-stock', {
-        company: msg
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+function updateDB(action, stockName) {
+  axios
+    .get(`${process.env.HOST}/${action}/${stockName}`)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}
+
+
+io.on('connection', (socket) => {
+  socket.on('add stock', (stockToAdd) => {
+    socket.broadcast.emit('add stock', stockToAdd);
+    updateDB('add-stock', stockToAdd);
   });
 
   socket.on('remove stock', (stockToRemove) => {
-    console.log(stockToRemove);
     socket.broadcast.emit('remove stock', stockToRemove);
-    axios
-      .get(`http://localhost:4000/remove-stock/${stockToRemove}`)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    updateDB('remove-stock', stockToRemove);
   });
 });
 
@@ -54,4 +44,3 @@ io.on('connection', (socket) => {
 http.listen(process.env.PORT, () => {
   console.log(`Magic is happening on ${process.env.PORT}`);
 });
-

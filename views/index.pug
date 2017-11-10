@@ -11,22 +11,22 @@ html(lang="en")
 
   body
     div(id="container" style="height: 400px; min-width: 310px")
-    if (companyNames)
-      each company in companyNames
-        div
-          form(action="" class="stock-details" id=`${company}`)
+    div(id="allStocks")
+      if (companyNames)
+        each company in companyNames
+          div(class="stock-details")
             h2= company
-            input(type="submit" value="remove")
+            button(id=`${company}`) Remove
 
     div
-      form(action="" class="add-stock")
-        input(id="m" name="company" placeholder="enter stock code")
+      form(action="" class="addStockForm")
+        input(id="stockName" name="company" placeholder="enter stock code")
         input(type="submit" value="add")
 
     script var stockOptions = []
     script var companyArray = !{companyArray}
+    script(src="/socket.io/socket.io.js")
     script(src="js/loadHome.js")
+    script(src="/js/realtime.js")
     script(src="js/stocksTheme.js")
     script(src="js/createChart.js")
-    script(src="/socket.io/socket.io.js")
-    script(src="/js/realtime.js")
