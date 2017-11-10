@@ -4,9 +4,9 @@ html(lang="en")
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
     title Stock Master
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://code.highcharts.com/stock/highstock.js"></script>
-    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    script(src="https://code.jquery.com/jquery-3.1.1.min.js")
+    script(src="https://code.highcharts.com/stock/highstock.js")
+    script(src="https://code.highcharts.com/stock/modules/exporting.js")
 
 
   body
@@ -14,17 +14,18 @@ html(lang="en")
     if (companyNames)
       each company in companyNames
         div
-          h2= company
-          a(href=`/remove-stock/${company}`)
-            button Remove
+          form(action="" class="stock-details" id=`${company}`)
+            h2= company
+            input(type="submit" value="remove")
 
     div
-      form(action="")
+      form(action="" class="add-stock")
         input(id="m" name="company" placeholder="enter stock code")
         input(type="submit" value="add")
 
-    script seriesOptions = !{seriesOptions}
-    script companyArray = !{companyArray}
+    script var stockOptions = []
+    script var companyArray = !{companyArray}
+    script(src="js/loadHome.js")
     script(src="js/stocksTheme.js")
     script(src="js/createChart.js")
     script(src="/socket.io/socket.io.js")
