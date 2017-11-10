@@ -36,8 +36,8 @@ function removeStock(stockToRemove, emitter) {
   $(`#${stockToRemove}`).parent().remove();
 
   // repaint graph;
-  stockOptions = stockOptions.filter(modifiedSeries => modifiedSeries.name !== stockToRemove);
-  companyArray = companyArray.filter(modifiedCompany => modifiedCompany !== stockToRemove);
+  stockOptions = stockOptions.filter(modifiedSeries => modifiedSeries.name !== String(stockToRemove));
+  companyArray = companyArray.filter(modifiedCompany => modifiedCompany !== String(stockToRemove));
   createChart(stockOptions);
 
   // emit stock to server for removal
