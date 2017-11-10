@@ -1,64 +1,31 @@
-const axios = require('axios');
 const Stock = require('../models/Stock');
 
-function getStockData(companyNames, res) {
-  // get stock data for each company
-  // save to seriesOptions
-
-  const seriesOptions = [];
-  companyNames.forEach((company) => {
-    const url = `https://www.quandl.com/api/v3/datasets/wiki/${company}.json?start_date=2016-01-01&end_date=2017-11-02&order=asc&column_index=4&api_key=${process.env.STOCK_API}`;
-    axios
-      .get(url)
-      .then((result) => {
-        const formattedData = result.data.dataset.data.map((element) => {
-          const givenDate = new Date(element[0]).getTime();
-          const stockPrice = element[1];
-          return [givenDate, stockPrice];
-        });
-
-        seriesOptions.push({
-          name: `${company}`,
-          data: formattedData
-        });
-
-        if (seriesOptions.length === companyNames.length) {
-          // render home page
-          res.render('index', {
-            seriesOptions: JSON.stringify(seriesOptions),
-            companyNames
-          });
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-        res.send('Error');
-      });
-  });
-  // need to refactor this function
-  // get all data for companies before rendering home page
-  // create promise for all companies
-  // if all promises resolve; render home page
-  // else render error
-}
-
-
 exports.showHome = async (req, res) => {
-  const stock = await Stock.findOne({});
-  const { companies } = stock;
-  getStockData(companies, res);
+  try {
+    const stock = await Stock.findOne({});
+    const defaultStock = { companies: ['aapl'] };
+
+    // companies property not empty
+    const { companies } = stock.companies.length ? stock : defaultStock;
+
+    res.render('index', {
+      companyNames: companies,
+      companyArray: JSON.stringify(companies)
+    });
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 
 exports.showError = (req, res) => {
-  res.render('error', {
-    companyNames: ['amzn', 'msft']
-  });
+  res.render('error');
 };
 
 
 exports.addStock = async (req, res) => {
-  const companyStock = req.body.company;
+  const companyStock = req.params.company;
+
   let stock = await Stock.findOne({});
 
   // if no document; create new document
@@ -74,18 +41,22 @@ exports.addStock = async (req, res) => {
 
   stock.companies.push(companyStock);
   const updated = await stock.save();
-  getStockData(updated.companies, res);
+  res.json(updated);
 };
 
 
 exports.removeStock = async (req, res) => {
   const companyStock = req.params.company;
-  const stock = await Stock.findOneAndUpdate(
-    {},
-    {
-      $pull: { companies: companyStock }
-    },
-    { new: true }
-  );
-  res.json(stock);
+  try {
+    const stock = await Stock.findOneAndUpdate(
+      {},
+      {
+        $pull: { companies: companyStock }
+      },
+      { new: true }
+    );
+    res.json(stock);
+  } catch (e) {
+    console.error(e);
+  }
 };
