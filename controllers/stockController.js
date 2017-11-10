@@ -3,13 +3,11 @@ const Stock = require('../models/Stock');
 exports.showHome = async (req, res) => {
   try {
     const stock = await Stock.findOne({});
-    const { companies } = stock;
+    const defaultStock = { companies: ['aapl'] };
 
-    if (!companies) {
-      // companies are empty
-      res.render('index');
-      return;
-    }
+    // companies property not empty
+    const { companies } = stock.companies.length ? stock : defaultStock;
+
     res.render('index', {
       companyNames: companies,
       companyArray: JSON.stringify(companies)
@@ -26,8 +24,7 @@ exports.showError = (req, res) => {
 
 
 exports.addStock = async (req, res) => {
-  const companyStock = req.body.company;
-  console.log(`Company is ${companyStock}`);
+  const companyStock = req.params.company;
 
   let stock = await Stock.findOne({});
 
@@ -63,11 +60,3 @@ exports.removeStock = async (req, res) => {
     console.error(e);
   }
 };
-
-
-exports.start = async (req, res) => {
-  const data = { companies: ['aapl'] };
-  const result = await (new Stock(data)).save();
-  res.json(result);
-};
-
