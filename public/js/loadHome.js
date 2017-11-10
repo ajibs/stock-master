@@ -14,9 +14,10 @@ function generateDate() {
 }
 
 const [startDate, endDate] = generateDate();
+
 const corsProxy = 'https://ajibs-cors-anywhere.herokuapp.com/';
 
-$.each(companyArray, (i, name) => {
+companyArray.forEach((name) => {
   const url = `https://www.quandl.com/api/v3/datasets/wiki/${name}.json?start_date=${startDate}&end_date=${endDate}&order=asc&column_index=4&api_key=PSk62mMsvFBdWw3Fc7y2`;
   $.getJSON(corsProxy + url, (result) => {
     const formattedData = result.dataset.data.map((element) => {
