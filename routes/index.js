@@ -9,5 +9,6 @@ router.get('/error', stockController.showError);
 router.post('/add-stock', stockController.addStock);
 router.get('/remove-stock/:company', stockController.removeStock);
 
+router.get('/start', stockController.start);
 
 module.exports = router;
