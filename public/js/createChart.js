@@ -3,7 +3,7 @@
 * @returns {undefined}
 */
 
-function createChart() {
+function createChart(seriesOptions) {
   Highcharts.stockChart('container', {
     rangeSelector: {
       selected: 4
@@ -28,23 +28,16 @@ function createChart() {
     },
     plotOptions: {
       series: {
-        compare: 'percent',
-        showInNavigator: true
+        compare: 'percent'
       }
     },
     tooltip: {
       pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
-      valueDecimals: 2,
-      split: true
+      valueDecimals: 2
     },
-    /*
-    series: [{
-      name: 'Google',
-      data: formattedData
-    }]
-    */
+    size: {
+      height: 400
+    },
     series: seriesOptions
   });
 }
-
-window.onload = createChart;
