@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node ./start.js",
     "watch": "nodemon ./start.js",
-    "assets": "webpack -w",
+    "assets": "webpack -w --display-max-modules 0",
     "dev": "concurrently \"npm run watch\" \"npm run assets\"",
     "debug": "node --inspect-brk ./start.js"
   },
