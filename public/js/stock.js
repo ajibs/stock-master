@@ -1,6 +1,6 @@
-import darkUnicaTheme from './stocksTheme';
-import loadHome from './loadHome';
-import realtime from './realtime';
+import darkUnicaTheme from './modules/stocksTheme';
+import loadHome from './modules/loadHome';
+import realtime from './modules/realtime';
 
 darkUnicaTheme();
 loadHome();

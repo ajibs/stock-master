@@ -70,15 +70,15 @@
 "use strict";
 
 
-var _stocksTheme = __webpack_require__(3);
+var _stocksTheme = __webpack_require__(6);
 
 var _stocksTheme2 = _interopRequireDefault(_stocksTheme);
 
-var _loadHome = __webpack_require__(1);
+var _loadHome = __webpack_require__(7);
 
 var _loadHome2 = _interopRequireDefault(_loadHome);
 
-var _realtime = __webpack_require__(4);
+var _realtime = __webpack_require__(8);
 
 var _realtime2 = _interopRequireDefault(_realtime);
 
@@ -96,73 +96,11 @@ script(src="js/createChart.js")
 */
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); // stockOptions and companyArray were defined globally;
-
-
-var _createChart = __webpack_require__(2);
-
-var _createChart2 = _interopRequireDefault(_createChart);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function loadHome() {
-  function generateDate() {
-    var d = new Date();
-    var currentYear = d.getFullYear();
-    var currentMonth = d.getMonth() + 1;
-    var currentDay = d.getDate();
-
-    var previousYear = currentYear - 1;
-    var startDate = previousYear + '-' + currentMonth + '-' + currentDay;
-    var endDate = currentYear + '-' + currentMonth + '-' + currentDay;
-
-    return [startDate, endDate];
-  }
-
-  var _generateDate = generateDate(),
-      _generateDate2 = _slicedToArray(_generateDate, 2),
-      startDate = _generateDate2[0],
-      endDate = _generateDate2[1];
-
-  var corsProxy = 'https://ajibs-cors-anywhere.herokuapp.com/';
-
-  companyArray.forEach(function (name) {
-    var url = 'https://www.quandl.com/api/v3/datasets/wiki/' + name + '.json?start_date=' + startDate + '&end_date=' + endDate + '&order=asc&column_index=4&api_key=PSk62mMsvFBdWw3Fc7y2';
-    $.getJSON(corsProxy + url, function (result) {
-      var formattedData = result.dataset.data.map(function (element) {
-        var givenDate = new Date(element[0]).getTime();
-        var stockPrice = element[1];
-        return [givenDate, stockPrice];
-      });
-
-      stockOptions.push({
-        name: '' + name,
-        data: formattedData
-      });
-
-      // create chart when all data loads
-      if (stockOptions.length === companyArray.length) {
-        console.log('creating chart');
-        (0, _createChart2.default)(stockOptions);
-      }
-    });
-  });
-}
-
-exports.default = loadHome;
-
-/***/ }),
-/* 2 */
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -218,7 +156,7 @@ function createChart(seriesOptions) {
 exports.default = createChart;
 
 /***/ }),
-/* 3 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -454,7 +392,7 @@ function darkUnicaTheme() {
 exports.default = darkUnicaTheme;
 
 /***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -464,7 +402,73 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createChart = __webpack_require__(2);
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); // stockOptions and companyArray were defined globally;
+
+
+var _createChart = __webpack_require__(5);
+
+var _createChart2 = _interopRequireDefault(_createChart);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function loadHome() {
+  function generateDate() {
+    var d = new Date();
+    var currentYear = d.getFullYear();
+    var currentMonth = d.getMonth() + 1;
+    var currentDay = d.getDate();
+
+    var previousYear = currentYear - 1;
+    var startDate = previousYear + '-' + currentMonth + '-' + currentDay;
+    var endDate = currentYear + '-' + currentMonth + '-' + currentDay;
+
+    return [startDate, endDate];
+  }
+
+  var _generateDate = generateDate(),
+      _generateDate2 = _slicedToArray(_generateDate, 2),
+      startDate = _generateDate2[0],
+      endDate = _generateDate2[1];
+
+  var corsProxy = 'https://ajibs-cors-anywhere.herokuapp.com/';
+
+  companyArray.forEach(function (name) {
+    var url = 'https://www.quandl.com/api/v3/datasets/wiki/' + name + '.json?start_date=' + startDate + '&end_date=' + endDate + '&order=asc&column_index=4&api_key=PSk62mMsvFBdWw3Fc7y2';
+    $.getJSON(corsProxy + url, function (result) {
+      var formattedData = result.dataset.data.map(function (element) {
+        var givenDate = new Date(element[0]).getTime();
+        var stockPrice = element[1];
+        return [givenDate, stockPrice];
+      });
+
+      stockOptions.push({
+        name: '' + name,
+        data: formattedData
+      });
+
+      // create chart when all data loads
+      if (stockOptions.length === companyArray.length) {
+        console.log('creating chart');
+        (0, _createChart2.default)(stockOptions);
+      }
+    });
+  });
+}
+
+exports.default = loadHome;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createChart = __webpack_require__(5);
 
 var _createChart2 = _interopRequireDefault(_createChart);
 
