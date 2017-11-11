@@ -41,3 +41,5 @@ function createChart(seriesOptions) {
     series: seriesOptions
   });
 }
+
+export default createChart;
