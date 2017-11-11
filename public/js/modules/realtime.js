@@ -1,40 +1,10 @@
 // stockOptions and companyArray were defined globally;
 import createChart from './createChart';
+import { generateURL, formatChartData } from './helpers';
+
 
 function realtime() {
   const socket = io();
-  const corsProxy = 'https://ajibs-cors-anywhere.herokuapp.com/';
-
-
-  function formatChartData(result) {
-    return result.dataset.data.map((element) => {
-      // used const because variable assignment does not change; only the value does
-      const givenDate = new Date(element[0]).getTime();
-      const stockPrice = element[1];
-      return [givenDate, stockPrice];
-    });
-  }
-
-
-  function retrieveStockData(companyStock, emitter) {
-    const url = `https://www.quandl.com/api/v3/datasets/wiki/${companyStock}.json?start_date=2016-01-01&end_date=2017-11-02&order=asc&column_index=4&api_key=PSk62mMsvFBdWw3Fc7y2`;
-    $.getJSON(corsProxy + url, (stockData) => {
-      stockOptions.push({ name: companyStock, data: formatChartData(stockData) });
-      companyArray.push(companyStock);
-      createChart(stockOptions);
-
-      appendStockToScreen(companyStock);
-
-      // EMITTER: send stock name to server
-      if (emitter) {
-        socket.emit('add stock', companyStock);
-      }
-    }).catch(() => {
-      alert('incorrect code');
-      $('#stockName').val('');
-    });
-  }
-
 
   function removeStock(stockToRemove, emitter) {
     $(`#${stockToRemove}`).parent().remove();
@@ -69,6 +39,30 @@ function realtime() {
   }
 
 
+  function retrieveStockData(companyStock, emitter) {
+    const url = generateURL(companyStock);
+    $.getJSON(url, (stockData) => {
+      stockOptions.push({
+        name: companyStock,
+        data: formatChartData(stockData)
+      });
+      companyArray.push(companyStock);
+      createChart(stockOptions);
+
+      appendStockToScreen(companyStock);
+
+      // EMITTER: send stock name to server
+      if (emitter) {
+        socket.emit('add stock', companyStock);
+      }
+    }).catch(() => {
+      alert('incorrect code');
+      $('#stockName').val('');
+    });
+  }
+
+
+  // EVENT LISTENERS
   $(() => {
     // ADD STOCK
     $('.addStockForm').submit((e) => {
@@ -105,5 +99,6 @@ function realtime() {
     });
   });
 }
+
 
 export default realtime;

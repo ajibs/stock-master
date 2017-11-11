@@ -88,13 +88,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _loadHome2.default)();
 (0, _realtime2.default)();
 
-/*
-script(src="js/loadHome.js")
-script(src="/js/realtime.js")
-script(src="js/stocksTheme.js")
-script(src="js/createChart.js")
-*/
-
 /***/ }),
 /* 1 */,
 /* 2 */,
@@ -402,48 +395,22 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); // stockOptions and companyArray were defined globally;
-
-
 var _createChart = __webpack_require__(5);
 
 var _createChart2 = _interopRequireDefault(_createChart);
 
+var _helpers = __webpack_require__(9);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// stockOptions and companyArray were defined globally;
 function loadHome() {
-  function generateDate() {
-    var d = new Date();
-    var currentYear = d.getFullYear();
-    var currentMonth = d.getMonth() + 1;
-    var currentDay = d.getDate();
-
-    var previousYear = currentYear - 1;
-    var startDate = previousYear + '-' + currentMonth + '-' + currentDay;
-    var endDate = currentYear + '-' + currentMonth + '-' + currentDay;
-
-    return [startDate, endDate];
-  }
-
-  var _generateDate = generateDate(),
-      _generateDate2 = _slicedToArray(_generateDate, 2),
-      startDate = _generateDate2[0],
-      endDate = _generateDate2[1];
-
-  var corsProxy = 'https://ajibs-cors-anywhere.herokuapp.com/';
-
-  companyArray.forEach(function (name) {
-    var url = 'https://www.quandl.com/api/v3/datasets/wiki/' + name + '.json?start_date=' + startDate + '&end_date=' + endDate + '&order=asc&column_index=4&api_key=PSk62mMsvFBdWw3Fc7y2';
-    $.getJSON(corsProxy + url, function (result) {
-      var formattedData = result.dataset.data.map(function (element) {
-        var givenDate = new Date(element[0]).getTime();
-        var stockPrice = element[1];
-        return [givenDate, stockPrice];
-      });
-
+  companyArray.forEach(function (company) {
+    var url = (0, _helpers.generateURL)(company);
+    $.getJSON(url, function (stockData) {
       stockOptions.push({
-        name: '' + name,
-        data: formattedData
+        name: '' + company,
+        data: (0, _helpers.formatChartData)(stockData)
       });
 
       // create chart when all data loads
@@ -472,39 +439,13 @@ var _createChart = __webpack_require__(5);
 
 var _createChart2 = _interopRequireDefault(_createChart);
 
+var _helpers = __webpack_require__(9);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// stockOptions and companyArray were defined globally;
 function realtime() {
   var socket = io();
-  var corsProxy = 'https://ajibs-cors-anywhere.herokuapp.com/';
-
-  function formatChartData(result) {
-    return result.dataset.data.map(function (element) {
-      // used const because variable assignment does not change; only the value does
-      var givenDate = new Date(element[0]).getTime();
-      var stockPrice = element[1];
-      return [givenDate, stockPrice];
-    });
-  }
-
-  function retrieveStockData(companyStock, emitter) {
-    var url = 'https://www.quandl.com/api/v3/datasets/wiki/' + companyStock + '.json?start_date=2016-01-01&end_date=2017-11-02&order=asc&column_index=4&api_key=PSk62mMsvFBdWw3Fc7y2';
-    $.getJSON(corsProxy + url, function (stockData) {
-      stockOptions.push({ name: companyStock, data: formatChartData(stockData) });
-      companyArray.push(companyStock);
-      (0, _createChart2.default)(stockOptions);
-
-      appendStockToScreen(companyStock);
-
-      // EMITTER: send stock name to server
-      if (emitter) {
-        socket.emit('add stock', companyStock);
-      }
-    }).catch(function () {
-      alert('incorrect code');
-      $('#stockName').val('');
-    });
-  }
 
   function removeStock(stockToRemove, emitter) {
     $('#' + stockToRemove).parent().remove();
@@ -536,6 +477,29 @@ function realtime() {
     });
   }
 
+  function retrieveStockData(companyStock, emitter) {
+    var url = (0, _helpers.generateURL)(companyStock);
+    $.getJSON(url, function (stockData) {
+      stockOptions.push({
+        name: companyStock,
+        data: (0, _helpers.formatChartData)(stockData)
+      });
+      companyArray.push(companyStock);
+      (0, _createChart2.default)(stockOptions);
+
+      appendStockToScreen(companyStock);
+
+      // EMITTER: send stock name to server
+      if (emitter) {
+        socket.emit('add stock', companyStock);
+      }
+    }).catch(function () {
+      alert('incorrect code');
+      $('#stockName').val('');
+    });
+  }
+
+  // EVENT LISTENERS
   $(function () {
     // ADD STOCK
     $('.addStockForm').submit(function (e) {
@@ -569,8 +533,59 @@ function realtime() {
       removeStock(stockToRemove, false);
     });
   });
-} // stockOptions and companyArray were defined globally;
+}
+
 exports.default = realtime;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var corsProxy = 'https://ajibs-cors-anywhere.herokuapp.com/';
+
+function generateDate() {
+  var d = new Date();
+  var currentYear = d.getFullYear();
+  var currentMonth = d.getMonth() + 1;
+  var currentDay = d.getDate();
+
+  var previousYear = currentYear - 1;
+  var startDate = previousYear + '-' + currentMonth + '-' + currentDay;
+  var endDate = currentYear + '-' + currentMonth + '-' + currentDay;
+
+  return [startDate, endDate];
+}
+
+function generateURL(name) {
+  var _generateDate = generateDate(),
+      _generateDate2 = _slicedToArray(_generateDate, 2),
+      startDate = _generateDate2[0],
+      endDate = _generateDate2[1];
+
+  var api = 'https://www.quandl.com/api/v3/datasets/wiki/' + name + '.json?start_date=' + startDate + '&end_date=' + endDate + '&order=asc&column_index=4&api_key=PSk62mMsvFBdWw3Fc7y2';
+  return corsProxy + api;
+}
+
+function formatChartData(result) {
+  return result.dataset.data.map(function (element) {
+    // used const because variable assignment does not change; only the value does
+    var givenDate = new Date(element[0]).getTime();
+    var stockPrice = element[1];
+    return [givenDate, stockPrice];
+  });
+}
+
+exports.generateURL = generateURL;
+exports.formatChartData = formatChartData;
 
 /***/ })
 /******/ ]);
