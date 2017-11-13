@@ -7,7 +7,10 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./start.js",
-    "dev": "nodemon ./start.js",
+    "watch": "nodemon ./start.js",
+    "assets": "webpack -w --display-max-modules 0",
+    "dev": "concurrently \"npm run watch\" \"npm run assets\"",
+    "prod": "node ./build.js",
     "debug": "node --inspect-brk ./start.js"
   },
   "dependencies": {
@@ -22,8 +25,14 @@
     "socket.io": "^2.0.4"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-preset-env": "^1.6.1",
+    "concurrently": "^3.5.0",
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "webpack": "^3.8.1"
   }
 }

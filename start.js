@@ -20,7 +20,7 @@ function updateDB(action, stockName) {
   axios
     .get(`${process.env.HOST}/${action}/${stockName}`)
     .then((response) => {
-      console.log(response.data);
+      console.log({ message: `${action} ${stockName}`, updatedCompanies: response.data.companies });
     })
     .catch((e) => {
       console.error(e);
