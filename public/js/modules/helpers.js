@@ -1,4 +1,5 @@
-const corsProxy = 'https://ajibs-cors-anywhere.herokuapp.com/';
+const corsProxy = 'https://stock-cors.herokuapp.com/';
+
 
 function generateDate() {
   const d = new Date();
