@@ -44,9 +44,15 @@ function realtime() {
   function retrieveStockData(companyStock, emitter) {
     const url = generateURL(companyStock);
     $.getJSON(url, (stockData) => {
+      let color = 0;
+      if (stockOptions.length) {
+        color = (stockOptions[stockOptions.length - 1]._colorIndex) + 1;
+      }
+
       stockOptions.push({
         name: companyStock,
-        data: formatChartData(stockData)
+        data: formatChartData(stockData),
+        _colorIndex: color
       });
       companyArray.push(companyStock);
       createChart(stockOptions);
