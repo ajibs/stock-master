@@ -14,6 +14,7 @@ function createChart(seriesOptions) {
           return (this.value > 0 ? ' + ' : '') + this.value + '%';
         }
       },
+
       plotLines: [{
         value: 0,
         width: 2,
@@ -35,8 +36,9 @@ function createChart(seriesOptions) {
       pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
       valueDecimals: 2
     },
-    size: {
+    chart: {
       height: 400
+
     },
     series: seriesOptions
   });
