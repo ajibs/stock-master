@@ -1,4 +1,5 @@
 // stockOptions and companyArray were defined globally;
+import dompurify from 'dompurify';
 import createChart from './createChart';
 import { generateURL, formatChartData } from './helpers';
 
@@ -13,6 +14,7 @@ function realtime() {
     stockOptions = stockOptions.filter(modifiedSeries => modifiedSeries.name !== String(stockToRemove));
     companyArray = companyArray.filter(modifiedCompany => modifiedCompany !== String(stockToRemove));
     createChart(stockOptions);
+
 
     // emit stock to server for removal
     if (emitter) {
@@ -34,7 +36,7 @@ function realtime() {
 
     // add remove stock listener to newly appended buttons
     $(`#${name}`).click(function() {
-      removeStock(this.id, true);
+      removeStock(dompurify.sanitize(this.id), true);
     });
   }
 
@@ -67,7 +69,7 @@ function realtime() {
     // ADD STOCK
     $('.addStockForm').submit((e) => {
       e.preventDefault();
-      const stockName = $('#stockName').val().toLowerCase();
+      const stockName = dompurify.sanitize($('#stockName').val().toLowerCase());
 
       if (companyArray.includes(stockName)) {
         alert('code exists');
@@ -89,7 +91,7 @@ function realtime() {
 
     // REMOVE STOCK
     $('button').click(function () {
-      removeStock(this.id, true);
+      removeStock(dompurify.sanitize(this.id), true);
     });
 
     // RECEIVER: when server emits message in realtime
