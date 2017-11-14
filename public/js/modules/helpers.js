@@ -1,3 +1,4 @@
+import dompurify from 'dompurify';
 const corsProxy = 'https://stock-cors.herokuapp.com/';
 
 
@@ -32,4 +33,9 @@ function formatChartData(result) {
 }
 
 
-export { generateURL, formatChartData };
+function sanitizeData(data) {
+  return dompurify.sanitize(data);
+}
+
+
+export { generateURL, formatChartData, sanitizeData };

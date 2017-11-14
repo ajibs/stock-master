@@ -1,4 +1,4 @@
-// stockOptions and companyArray were defined globally;
+// stockOptions and companyArray are defined globally;
 import createChart from './createChart';
 import { generateURL, formatChartData } from './helpers';
 
@@ -14,7 +14,6 @@ function loadHome() {
 
       // create chart when all data loads
       if (stockOptions.length === companyArray.length) {
-        console.log('creating chart');
         createChart(stockOptions);
       }
     });
