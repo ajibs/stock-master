@@ -5,6 +5,9 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const cssnano = require('cssnano');
 
 
 const javascript = {
@@ -17,6 +20,11 @@ const javascript = {
   }]
 };
 
+const styles = {
+  test: /\.(css)$/,
+  use: ExtractTextPlugin.extract('css-loader')
+};
+
 const config = {
   devtool: 'source-map',
   entry: {
@@ -27,9 +35,16 @@ const config = {
     filename: '[name].bundle.js'
   },
   module: {
-    rules: [javascript]
+    rules: [javascript, styles]
   },
   plugins: [
+    new ExtractTextPlugin('style.bundle.css'),
+
+    new OptimizeCssAssetsPlugin({
+      cssProcessor: cssnano,
+      canPrint: true
+    }),
+
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true
     }),

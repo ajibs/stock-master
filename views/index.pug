@@ -4,15 +4,15 @@ html(lang="en")
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
     title Stock Master
-    link(rel="stylesheet" href="/css/style.css")
+    link(rel="stylesheet" href="/dist/style.bundle.css")
     script(src="https://code.jquery.com/jquery-3.1.1.min.js")
     script(src="https://code.highcharts.com/stock/highstock.js")
     script(src="https://code.highcharts.com/stock/modules/exporting.js")
 
 
   body
-    div(id="container" style="height: 400px; min-width: 310px")
-    div(id="allStocks")
+    div(id="graph")
+    div(id="all-stocks")
       if (companyNames)
         each company in companyNames
           div(class="stock-details")
@@ -20,10 +20,11 @@ html(lang="en")
             button(class="danger" id=`${company}`) Remove
 
     div(class="new-stock-wrapper")
-      form(action="" class="addStockForm")
+      form(action="" class="add-stock-form")
         p Sync across clients in realtime
-        input(id="stockName" name="company" placeholder="enter stock code")
-        input(type="submit" class="success" value="add")
+        input(id="stock-name" name="company" placeholder="enter stock code")
+        input(type="submit" class="success" value="Add")
+
 
     script var stockOptions = []
     script var companyArray = !{companyArray}

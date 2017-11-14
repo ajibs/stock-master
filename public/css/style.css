@@ -9,7 +9,7 @@ h2 {
   text-transform: uppercase;
 }
 
-#allStocks {
+#all-stocks {
   text-align: center;
   margin-top: 20px
 }
@@ -24,7 +24,7 @@ h2 {
 }
 
 @media(min-width: 600px) {
-  #allStocks {
+  #all-stocks {
     display: flex;
   }
 
@@ -54,14 +54,19 @@ h2 {
   border-radius: 5px;
 }
 
-.addStockForm {
+.add-stock-form {
   padding: 10px;
 }
 
-#stockName {
+#stock-name {
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-bottom: 5px;
   margin-right: 10px;
+}
+
+#graph {
+  height: 400px;
+  min-width: 310px;
 }

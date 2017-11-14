@@ -1,31 +1,22 @@
 const Stock = require('../models/Stock');
 
+
 exports.showHome = async (req, res) => {
-  try {
-    const stock = await Stock.findOne({});
-    const defaultStock = { companies: ['aapl'] };
+  const stock = await Stock.findOne({});
+  const defaultStock = { companies: ['aapl'] };
 
-    // companies property not empty
-    const { companies } = stock.companies.length ? stock : defaultStock;
+  // companies property not empty
+  const { companies } = stock.companies.length ? stock : defaultStock;
 
-    res.render('index', {
-      companyNames: companies,
-      companyArray: JSON.stringify(companies)
-    });
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-
-exports.showError = (req, res) => {
-  res.render('error');
+  res.render('index', {
+    companyNames: companies,
+    companyArray: JSON.stringify(companies)
+  });
 };
 
 
 exports.addStock = async (req, res) => {
   const companyStock = req.params.company;
-
   let stock = await Stock.findOne({});
 
   // if no document; create new document
@@ -47,16 +38,13 @@ exports.addStock = async (req, res) => {
 
 exports.removeStock = async (req, res) => {
   const companyStock = req.params.company;
-  try {
-    const stock = await Stock.findOneAndUpdate(
-      {},
-      {
-        $pull: { companies: companyStock }
-      },
-      { new: true }
-    );
-    res.json(stock);
-  } catch (e) {
-    console.error(e);
-  }
+
+  const stock = await Stock.findOneAndUpdate(
+    {},
+    {
+      $pull: { companies: companyStock }
+    },
+    { new: true }
+  );
+  res.json(stock);
 };
