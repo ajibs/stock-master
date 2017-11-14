@@ -3,6 +3,7 @@ const routes = require('./routes/index');
 const helmet = require('helmet');
 const path = require('path');
 const bodyParser = require('body-parser');
+const errorHandlers = require('./handlers/errorHandlers');
 
 const app = express();
 
@@ -22,6 +23,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // use routes
 app.use('/', routes);
+
+app.use(errorHandlers.notFound);
+
+// really bad error we didn't expect
+if (app.get('env') === 'development') {
+  // development error handler: prints stack trace
+  app.use(errorHandlers.developmentErrors);
+}
+
+// production error handler
+app.use(errorHandlers.productionErrors);
 
 
 module.exports = app;
