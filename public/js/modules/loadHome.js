@@ -1,4 +1,5 @@
 // stockOptions and companyArray are defined globally;
+
 import createChart from './createChart';
 import { generateURL, formatChartData } from './helpers';
 
