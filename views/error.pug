@@ -4,8 +4,39 @@ html(lang="en")
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
     title Stock Master
-    script(src="js/stocksTheme.js")
+    link(rel="stylesheet" href="/css/style.css")
 
   body
     h2 Something went wrong
     p Please try again
+
+    div(id="allStocks")
+      div(class="stock-details")
+        h2 tsla
+        button(class="danger" id="tsla") Remove
+      div(class="stock-details")
+        h2 fb
+        button(class="danger" id="fb") Remove
+      div(class="stock-details")
+        h2 amzn
+        button(class="danger" id="fb") Remove
+      div(class="stock-details")
+        h2 msft
+        button(class="danger" id="fb") Remove
+      div(class="stock-details")
+        h2 googl
+        button(class="danger" id="fb") Remove
+      div(class="stock-details")
+        h2 googl
+        button(class="danger" id="fb") Remove
+      div(class="stock-details")
+        h2 googl
+        button(class="danger" id="fb") Remove
+      div(class="stock-details")
+        h2 googl
+        button(class="danger" id="fb") Remove
+      div(class="stock-details")
+        form(action="" class="addStockForm")
+          p Sync across clients in realtime
+          input(id="stockName" name="company" placeholder="enter stock code")
+          input(type="submit" class="success" value="add")

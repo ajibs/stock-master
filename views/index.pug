@@ -4,6 +4,7 @@ html(lang="en")
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
     title Stock Master
+    link(rel="stylesheet" href="/css/style.css")
     script(src="https://code.jquery.com/jquery-3.1.1.min.js")
     script(src="https://code.highcharts.com/stock/highstock.js")
     script(src="https://code.highcharts.com/stock/modules/exporting.js")
@@ -16,12 +17,13 @@ html(lang="en")
         each company in companyNames
           div(class="stock-details")
             h2= company
-            button(id=`${company}`) Remove
+            button(class="danger" id=`${company}`) Remove
 
-    div
+    div(class="new-stock-wrapper")
       form(action="" class="addStockForm")
+        p Sync across clients in realtime
         input(id="stockName" name="company" placeholder="enter stock code")
-        input(type="submit" value="add")
+        input(type="submit" class="success" value="add")
 
     script var stockOptions = []
     script var companyArray = !{companyArray}
