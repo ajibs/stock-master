@@ -14,7 +14,7 @@
 
 function darkUnicaTheme() {
   Highcharts.createElement('link', {
-    href: 'https://fonts.googleapis.com/css?family=Unica+One',
+    href: 'https://fonts.googleapis.com/css?family=Open+Sans',
     rel: 'stylesheet',
     type: 'text/css'
   }, null, document.getElementsByTagName('head')[0]);
@@ -36,7 +36,7 @@ function darkUnicaTheme() {
         ]
       },
       style: {
-        fontFamily: '\'Unica One\', sans-serif'
+        fontFamily: '\'Open Sans\', sans-serif'
       },
       plotBorderColor: '#606063'
     },

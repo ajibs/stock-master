@@ -27,7 +27,7 @@ function realtime() {
     const html = `
       <div class="stock-details">
         <h2>${name}</h2>
-        <button id="${name}">Remove</button>
+        <button class="danger" id="${name}">Remove</button>
       </div>
     `;
 

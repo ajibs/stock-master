@@ -1,0 +1,67 @@
+body {
+  background-color:#4e4747;
+  color: white;
+  padding: 50px;
+  font-family: 'Open Sans', sans-serif
+}
+
+h2 {
+  text-transform: uppercase;
+}
+
+#allStocks {
+  text-align: center;
+  margin-top: 20px
+}
+
+.stock-details, .new-stock-wrapper {
+  background-color: white;
+  color: #333;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  padding-top: 5px;
+  border-radius: 6px
+}
+
+@media(min-width: 600px) {
+  #allStocks {
+    display: flex;
+  }
+
+  .stock-details {
+    margin-right: 1.5%;
+    width: 100%;
+  }
+
+  .new-stock-wrapper {
+    width: 30%;
+  }
+}
+
+.danger {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.success {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.addStockForm {
+  padding: 10px;
+}
+
+#stockName {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
