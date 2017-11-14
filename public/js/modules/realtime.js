@@ -1,110 +1,41 @@
-// stockOptions and companyArray were defined globally;
-import dompurify from 'dompurify';
-import createChart from './createChart';
-import { generateURL, formatChartData } from './helpers';
+// stockOptions and companyArray are defined globally;
+
+import { sanitizeData } from './helpers';
+import { removeStock, retrieveStockData, socket } from './request';
 
 
 function realtime() {
-  const socket = io();
-
-  function removeStock(stockToRemove, emitter) {
-    $(`#${stockToRemove}`).parent().remove();
-
-    // repaint graph;
-    stockOptions = stockOptions.filter(modifiedSeries => modifiedSeries.name !== String(stockToRemove));
-    companyArray = companyArray.filter(modifiedCompany => modifiedCompany !== String(stockToRemove));
-    createChart(stockOptions);
-
-
-    // emit stock to server for removal
-    if (emitter) {
-      socket.emit('remove stock', stockToRemove);
-    }
-  }
-
-
-  function appendStockToScreen(name) {
-    const html = `
-      <div class="stock-details">
-        <h2>${name}</h2>
-        <button class="danger" id="${name}">Remove</button>
-      </div>
-    `;
-
-    $('#allStocks').append(html);
-    $('#stockName').val('');
-
-    // add remove stock listener to newly appended buttons
-    $(`#${name}`).click(function() {
-      removeStock(dompurify.sanitize(this.id), true);
-    });
-  }
-
-
-  function retrieveStockData(companyStock, emitter) {
-    const url = generateURL(companyStock);
-    $.getJSON(url, (stockData) => {
-      let color = 0;
-      if (stockOptions.length) {
-        color = (stockOptions[stockOptions.length - 1]._colorIndex) + 1;
-      }
-
-      stockOptions.push({
-        name: companyStock,
-        data: formatChartData(stockData),
-        _colorIndex: color
-      });
-      companyArray.push(companyStock);
-      createChart(stockOptions);
-
-      appendStockToScreen(companyStock);
-
-      // EMITTER: send stock name to server
-      if (emitter) {
-        socket.emit('add stock', companyStock);
-      }
-    }).catch(() => {
-      alert('incorrect code');
-      $('#stockName').val('');
-    });
-  }
-
-
   // EVENT LISTENERS
-  $(() => {
-    // ADD STOCK
-    $('.addStockForm').submit((e) => {
-      e.preventDefault();
-      const stockName = dompurify.sanitize($('#stockName').val().toLowerCase());
 
-      if (companyArray.includes(stockName)) {
-        alert('code exists');
-        $('#stockName').val('');
-        return;
-      }
-
-      // retrieve stock data and emit message via sockets
-      retrieveStockData(stockName, true);
-    });
+  $('.danger').click(function () {
+    // remove stock from screen and emit message to server
+    removeStock(sanitizeData(this.id), true);
+  });
 
 
-    // RECEIVER: when server emits message in realtime
-    socket.on('add stock', (stockToAdd) => {
-      // only retrieve stock data
-      retrieveStockData(stockToAdd, false);
-    });
+  $('.add-stock-form').submit((e) => {
+    e.preventDefault();
+    const stockName = $('#stock-name').val().toLowerCase();
+
+    if (companyArray.includes(stockName)) {
+      alert('Code Exists');
+      $('#stock-name').val('');
+      return;
+    }
+    // retrieve stock data and emit message to server
+    retrieveStockData(sanitizeData(stockName), true);
+  });
 
 
-    // REMOVE STOCK
-    $('button').click(function () {
-      removeStock(dompurify.sanitize(this.id), true);
-    });
+  socket.on('add stock', (stockToAdd) => {
+    // only retrieve stock data
+    retrieveStockData(sanitizeData(stockToAdd), false);
+  });
 
-    // RECEIVER: when server emits message in realtime
-    socket.on('remove stock', (stockToRemove) => {
-      // only remove stock from page
-      removeStock(stockToRemove, false);
-    });
+
+  socket.on('remove stock', (stockToRemove) => {
+    // only remove stock from page
+    removeStock(sanitizeData(stockToRemove), false);
   });
 }
 

@@ -1,3 +1,5 @@
+import dompurify from 'dompurify';
+
 const corsProxy = 'https://stock-cors.herokuapp.com/';
 
 
@@ -22,6 +24,16 @@ function generateURL(name) {
 }
 
 
+function generateHTML(name) {
+  return `
+  <div class="stock-details">
+    <h2>${name}</h2>
+    <button class="danger" id="${name}">Remove</button>
+  </div>
+`;
+}
+
+
 function formatChartData(result) {
   return result.dataset.data.map((element) => {
     // used const because variable assignment does not change; only the value does
@@ -32,4 +44,9 @@ function formatChartData(result) {
 }
 
 
-export { generateURL, formatChartData };
+function sanitizeData(data) {
+  return dompurify.sanitize(data);
+}
+
+
+export { generateURL, generateHTML, formatChartData, sanitizeData };

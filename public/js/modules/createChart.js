@@ -4,7 +4,7 @@
 */
 
 function createChart(seriesOptions) {
-  Highcharts.stockChart('container', {
+  Highcharts.stockChart('graph', {
     rangeSelector: {
       selected: 4
     },
@@ -14,7 +14,6 @@ function createChart(seriesOptions) {
           return (this.value > 0 ? ' + ' : '') + this.value + '%';
         }
       },
-
       plotLines: [{
         value: 0,
         width: 2,
