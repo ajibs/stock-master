@@ -16,13 +16,13 @@
 
 
 const path = require('path');
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-// const cssnano = require('cssnano');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const cssnano = require('cssnano');
 
-/*
+
 const configurePlugins = () => {
   const plugins = [
     // note; should checkout long-term caching solutions
@@ -36,22 +36,21 @@ const configurePlugins = () => {
     })
   ];
 
-  if (process.env.NODE_ENV == 'production') {
+  if (true) {
     plugins.push(new UglifyJSPlugin({
       sourceMap: true,
       uglifyOptions: {
         mangle: {
           // Works around a Safari 10 bug:
           // https://github.com/mishoo/UglifyJS2/issues/1753
-          safari10: true,
-        },
-      },
+          safari10: true
+        }
+      }
     }));
   }
 
   return plugins;
 };
-*/
 
 
 const configureBabelLoader = (browserlist) => {
@@ -77,12 +76,11 @@ const configureBabelLoader = (browserlist) => {
 };
 
 
-/*
 const styles = {
   test: /\.(css)$/,
   use: ExtractTextPlugin.extract('css-loader')
 };
-*/
+
 
 const baseConfig = {
   output: {
@@ -98,7 +96,7 @@ const modernConfig = Object.assign({}, baseConfig, {
   entry: {
     main: './public/js/stock.js'
   },
-  // plugins: configurePlugins({runtimeName: 'runtime'}),
+  plugins: configurePlugins(),
   module: {
     rules: [
       configureBabelLoader([
@@ -109,8 +107,8 @@ const modernConfig = Object.assign({}, baseConfig, {
         'last 2 iOS versions', 'not iOS < 10.3',
         'last 2 Firefox versions', 'not Firefox < 54',
         'last 2 Edge versions', 'not Edge < 15'
-      ])
-      // styles
+      ]),
+      styles
     ]
   }
 });
@@ -120,15 +118,15 @@ const legacyConfig = Object.assign({}, baseConfig, {
   entry: {
     'main-legacy': './public/js/stock.js'
   },
-  // plugins: configurePlugins({runtimeName: 'runtime-legacy'}),
+  plugins: configurePlugins(),
   module: {
     rules: [
       configureBabelLoader([
         '> 1%',
         'last 2 versions',
         'Firefox ESR'
-      ])
-    // styles
+      ]),
+      styles
     ]
   }
 });
