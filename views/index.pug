@@ -12,18 +12,19 @@ html(lang="en")
 
   body
     div(id="graph")
-    div(id="all-stocks")
-      if (companyNames)
-        each company in companyNames
-          div(class="stock-details")
-            h2= company
-            button(class="danger" id=`${company}`) Remove
+    div(class="plot-actions")
+      div(id="all-stocks")
+        if (companyNames)
+          each company in companyNames
+            div(class="stock-details")
+              h2= company
+              button(class="danger" id=`${company}`) Remove
 
-    div(class="new-stock-wrapper")
-      form(action="" class="add-stock-form")
-        p Sync across clients in realtime
-        input(id="stock-name" name="company" placeholder="enter stock code")
-        input(type="submit" class="success" value="Add")
+      div(class="new-stock-wrapper")
+        form(action="" class="add-stock-form")
+          p Sync across clients in realtime
+          input(id="stock-name" name="company" placeholder="enter stock code")
+          input(type="submit" class="success" value="Add")
 
 
     script var stockOptions = []
