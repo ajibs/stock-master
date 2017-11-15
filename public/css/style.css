@@ -1,7 +1,6 @@
 body {
   background-color:#4e4747;
   color: white;
-  padding: 50px;
   font-family: 'Open Sans', sans-serif
 }
 
@@ -9,9 +8,12 @@ h2 {
   text-transform: uppercase;
 }
 
+.plot-actions {
+  padding: 0 50px;
+}
+
 #all-stocks {
   text-align: center;
-  margin-top: 20px
 }
 
 .stock-details, .new-stock-wrapper {
@@ -21,6 +23,19 @@ h2 {
   margin-bottom: 20px;
   padding-top: 5px;
   border-radius: 6px
+}
+
+
+#graph {
+  height: 400px;
+  min-width: 310px;
+  padding-bottom: 50px;
+}
+
+@media(min-width: 400px) {
+  #graph {
+    padding: 50px;
+  }
 }
 
 @media(min-width: 600px) {
@@ -33,6 +48,12 @@ h2 {
     width: 100%;
   }
 
+  .new-stock-wrapper {
+    width: 42%;
+  }
+}
+
+@media(min-width: 800px) {
   .new-stock-wrapper {
     width: 30%;
   }
@@ -64,9 +85,4 @@ h2 {
   border-radius: 4px;
   margin-bottom: 5px;
   margin-right: 10px;
-}
-
-#graph {
-  height: 400px;
-  min-width: 310px;
 }

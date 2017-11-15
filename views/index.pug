@@ -4,29 +4,31 @@ html(lang="en")
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
     title Stock Master
-    link(rel="stylesheet" href="/dist/style.bundle.css")
+    link(rel="stylesheet" href="/prod/style-main.bundle.css")
     script(src="https://code.jquery.com/jquery-3.1.1.min.js")
     script(src="https://code.highcharts.com/stock/highstock.js")
     script(src="https://code.highcharts.com/stock/modules/exporting.js")
+    script(src="/socket.io/socket.io.js")
 
 
   body
     div(id="graph")
-    div(id="all-stocks")
-      if (companyNames)
-        each company in companyNames
-          div(class="stock-details")
-            h2= company
-            button(class="danger" id=`${company}`) Remove
+    div(class="plot-actions")
+      div(id="all-stocks")
+        if (companyNames)
+          each company in companyNames
+            div(class="stock-details")
+              h2= company
+              button(class="danger" id=`${company}`) Remove
 
-    div(class="new-stock-wrapper")
-      form(action="" class="add-stock-form")
-        p Sync across clients in realtime
-        input(id="stock-name" name="company" placeholder="enter stock code")
-        input(type="submit" class="success" value="Add")
+      div(class="new-stock-wrapper")
+        form(action="" class="add-stock-form")
+          p Sync across clients in realtime
+          input(id="stock-name" name="company" placeholder="enter stock code")
+          input(type="submit" class="success" value="Add")
 
 
     script var stockOptions = []
     script var companyArray = !{companyArray}
-    script(src="/socket.io/socket.io.js")
-    script(src="/dist/App.bundle.js")
+    script(type="module" src="/prod/main.js")
+    script(nomodule src="/prod/main-legacy.js")
