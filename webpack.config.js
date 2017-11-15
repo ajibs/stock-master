@@ -1,8 +1,10 @@
 /**
  * webpack config for development
- * I would switch in production: to Philip Walton's configs for shipping ES6+
+ * I switched to Philip Walton's configs for shipping ES6+
+ * configs in bundles.js
  */
 
+/*
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -59,3 +61,4 @@ const config = {
 
 
 module.exports = config;
+*/
