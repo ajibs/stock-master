@@ -1,6 +1,6 @@
 # Stock Master
 
-Stay updated with the stock trends of companies you and friends care about..
+Stay updated with the stock trends of companies you and friends care about.
 
 Stock Master is a [FreeCodeCamp](https://www.freecodecamp.org/) Project.
 
@@ -27,7 +27,54 @@ Stock Master is hosted on Heroku and can be accessed here:
  - [Node.js](https://nodejs.org/en/download/)
  - [MongoDb](https://www.mongodb.com/download-center#community)
  - [Yarn](https://yarnpkg.com/en/docs/install)
- - ``` yarn ``` will install all dependencies
+
+## Setup
+#### Local Copy
+To create a local copy, run the following in your terminal:
+```bash
+git clone https://github.com/ajibs/stock-master.git
+```
+Then change into the local directory, run the following in your terminal:
+```bash
+cd stock-master
+```
+
+#### Install Node.js and Yarn
+If you don't have Node.js installed, please go ahead and grab it [here](https://nodejs.org/). This project uses ES6+ features and requires Node version `>= 7.6.0` and `<=8.9.1`
+
+Yarn is a package manager for Node.js and can be installed from [here](https://yarnpkg.com/en/docs/install).
+
+To confirm that you have Node.js installed, run the following in your terminal:
+```bash
+node -v
+```
+You should get something like `v8.9.1`.
+
+To confirm that you have Yarn installed, run the following in your terminal:
+```bash
+yarn -v
+```
+You should get something like `1.3.2`.
+
+#### Setup Database and .env file
+You can setup a database on [mlab](https://mlab.com/). You should also create a `.env` file using `.env.sample` as a prototype.
+
+#### Install Node.js Modules
+To install all dependencies, run the following in your terminal:
+```bash
+yarn
+```
+
+## Development
+To kickstart the application, run the following in your terminal:
+```bash
+npm start
+```
+
+To continue full-stack development on this project, run the following in your terminal:
+```bash
+npm run dev
+```
 
 
 ## Built With
@@ -63,7 +110,7 @@ Contributions are welcome
 ## Acknowledgments
 * [Vadym Yatsyuk](https://github.com/VadimDez/watchstocks)
 * [FreeCodeCamp](https://www.freecodecamp.org/)
-* [Chingu Cohorts](https://chingu-cohorts.github.io/chingu-directory/)
+* [Chingu](https://chingu-cohorts.github.io/chingu-directory/)
 * Red Pandas
 * Developer Community
 * Family and Friends
